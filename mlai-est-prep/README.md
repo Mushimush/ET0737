@@ -1,6 +1,6 @@
 # MLAI End-Semester Test — Practice Questions
 
-A collection of 65 practice questions covering every concept in the EST question pool (both parts). Every question is a **parallel version** of the real material — same concept, same trap, same difficulty, but different numbers, code, and scenarios. Memorising these answers will not help you on the exam; understanding *why* each answer is right will. That's the point.
+A collection of 65 practice questions with fully worked explanations, covering the whole ET0737 syllabus — Python, NumPy, Pandas, visualization, data preprocessing, model training, and evaluation. Every answer walks through the *why*: the trace, the key rule, and the trap to avoid — so the understanding carries to any question on the topic, not just this one.
 
 Structure — **Part 1** (ML fundamentals): Q1–Q20 concept questions, Q21–Q26 core-pattern drills, B1–B6 bonus. **Part 2** (Python, NumPy/Pandas, workflow & evaluation): Q27–Q59, grouped by topic.
 
@@ -8,25 +8,25 @@ Click any **Answer** block to reveal the explanation, the trace, and the key rul
 
 ---
 
-## Revision or New Material? — Read this first
+## Give These Topics Extra Attention
 
-Audited against every lab and tutorial in the module. Most exam topics are revision — but the ones below appear on the exam **without ever being covered in a lab or tutorial**. You cannot answer these from lab memory; the questions here are your only practice. Study them as *new* material:
+Most of this prep is revision of the labs and tutorials. The topics below got only light coverage there, so treat them as **new material** rather than revision and budget study time accordingly:
 
-| Exam-only topic | Where it's covered here |
+| Topic | Where it's covered here |
 |---|---|
-| File modes `"w"` vs `"a"` (the disappearing-logs question) — Lab 3 only ever *reads* files | Q32 |
-| `try / except / finally` — exceptions are raised in labs but never caught | B2 |
-| `A[:,1]` (1D) vs `A[:,1:2]` (2D), Ellipsis `A[...,1]`, chained `A[1:3][1:3]` — Lab 4 teaches 2D slicing but none of these three distinctions | Q34, Q35 |
-| Gradient-descent taxonomy (Batch vs Stochastic vs Mini-batch) — Tutorial 10 shows one manual GD loop and names SGD only in passing | Q24 |
-| Bias-variance trade-off and the bull's-eye diagram — no lab or tutorial mentions either | Q53, B5 |
-| PCA beyond one sentence — appears once as a Tutorial 7 MCQ | Q11 |
-| The validation set / test-set discipline — the course only ever splits two ways (train/test) | Q56 |
-| Seaborn — never imported in any lab (the course heatmap uses `plt.imshow`) | Q41 |
-| Model versioning (`model_v1.pkl`) — joblib is taught in Tutorial 11, versioning is not | B6 |
-| `str.upper()` on data values — Lab 5 / Tutorial 6 teach `.str.strip()` / `.str.title()`, not case-standardizing values | Q40 |
-| "Feature selection" as a named term — the activity appears in Lab 8, the name never does | Q10 |
+| File modes `"w"` vs `"a"` for writing and appending | Q32 |
+| `try / except / finally` | B2 |
+| `A[:,1]` (1D) vs `A[:,1:2]` (2D), Ellipsis `A[...,1]`, and chained `A[1:3][1:3]` indexing | Q34, Q35 |
+| Gradient-descent variants: Batch vs Stochastic vs Mini-batch | Q24 |
+| Bias-variance trade-off and the bull's-eye diagram | Q53, B5 |
+| PCA — what the components are and when to use it | Q11 |
+| The validation set and test-set discipline | Q56 |
+| Seaborn and how it relates to Matplotlib | Q41 |
+| Model versioning (`model_v1.pkl`) | B6 |
+| `.str.upper()` / `.str.lower()` for standardizing text values | Q40 |
+| "Feature selection" as a named term (vs feature engineering) | Q10 |
 
-Everything else in this prep is revision of Labs 2–9 and Tutorials 2–11 — the answers there deliberately reuse the labs' own examples and phrasings so the connection is obvious.
+Everything else is revision of Labs 2–9 and Tutorials 2–11 — the answers reference the labs' own examples and phrasings so the connection is easy to see.
 
 ---
 
@@ -912,7 +912,7 @@ MSE, RMSE and R² are **regression** metrics — they don't apply to classificat
 
 ## Core-Pattern Drills
 
-These six drill the pool's most-repeated patterns — same concepts, fresh numbers and framings.
+These six drill the module's most important recurring patterns — the ones worth over-learning.
 
 ---
 
@@ -1077,7 +1077,7 @@ Low + low + small gap = **Underfitting** (high **bias**): the model is too simpl
 
 > **Batch = all. Stochastic = one. Mini-batch = some.**
 
-**Heads-up — this taxonomy is exam-only material.** Tutorial 10 walks through ONE manual gradient-descent loop (which is batch GD, though it never uses the name) and mentions `SGDRegressor` in passing; batch/stochastic/mini-batch as a comparison never appears in any lab or tutorial. Learn the three-row table above from scratch — you have no lab memory to lean on here.
+**Heads-up — treat this taxonomy as new material.** Tutorial 10 walks through one manual gradient-descent loop (which is batch GD, though it never uses the name) and mentions `SGDRegressor` in passing — the three-way comparison itself is new. Learn the three-row table above from scratch rather than leaning on lab memory.
 
 **And what is gradient descent minimising?** The **loss function** — its purpose (measuring prediction error so it can be minimised) is a question of its own; see B1. Gradient descent repeatedly nudges the parameters in the direction that reduces that loss.
 
@@ -1424,7 +1424,7 @@ Which statements are correct? (Select ALL that apply)
 
 > **Position = bias. Spread = variance.** Two words, four diagrams, zero memorisation needed.
 
-**Heads-up — exam-only material:** no lab or tutorial uses the words "bias" or "variance" or shows a bull's-eye; the course taught the same ideas as *underfitting* (Tutorial 10: "too simple… both training and test performance are poor") and *overfitting* ("learns noise… training high but test drops"). The translation table above — high bias ↔ underfitting, high variance ↔ overfitting — is the bridge between what you were taught and how the exam words it. Several exam questions live on this bridge.
+**Heads-up — treat this as new material:** the labs and tutorials taught these ideas as *underfitting* (Tutorial 10: "too simple… both training and test performance are poor") and *overfitting* ("learns noise… training high but test drops") without ever using the words "bias" or "variance". The translation table above — high bias ↔ underfitting, high variance ↔ overfitting — is the bridge between the vocabulary you know and the vocabulary questions may use. Cross it fluently in both directions.
 
 </p>
 </details>
@@ -3044,27 +3044,64 @@ What does the value **3000** represent?
 
 ---
 
-## Final-check list
+## Final-Check List
 
-Twenty one-liners to run through the night before:
+Night-before revision — one fact per line, grouped by topic.
 
-1. `plt.xlabel` / `plt.ylabel` / `plt.title` — everything else is fake.
-2. Outliers → **boxplot**, fences at Q1/Q3 ± 1.5×IQR.
-3. `df.isnull().sum()` counts missing per column; `dropna`/`fillna(median)` handle them.
-4. `StandardScaler` → mean 0, std 1. `MinMaxScaler` → [0, 1]. Fit on **train only**.
-5. Ordered category → Label Encoding. Unordered → One-Hot. Hundreds of correlated features → PCA.
-6. `train_test_split()`, `test_size=0.2` = 20% test, `random_state` = reproducible.
-7. Continuous target → Linear Regression. Yes/No → Logistic Regression. No labels → K-Means. Forest = many trees, majority vote, `n_estimators` is a hyperparameter.
-8. Both scores low → **underfit** (high bias). Big train–test gap → **overfit** (high variance) → decrease `max_depth`. Bull's-eye: position = bias, spread = variance.
-9. Missing a cancer case is costly → **Recall** = TP/(TP+FN). Regression → MSE/RMSE (RMSE: ≥0, lower better, target units).
-10. Loss function = error signal for optimization. SGD = update per sample; mini-batch = the deep-learning default. `finally` always runs. Fit before dump, or `NotFittedError`.
-11. `def f(a, b=2)` — `b` optional, `a` required. Early `return` needs no `else`. A method without `return` gives `None`; `self.attr` = per-object state.
-12. `and` before `or`: `P and Q or R` = `(P and Q) or R`. `continue` skips the rest of ONE iteration — the loop still runs every iteration; read the condition to see which values are *kept*, then sum those.
-13. `"w"` wipes the file, `"a"` appends — disappearing logs = `"w"` bug.
-14. `A[2:5, 0:3]` = rows 2–4 × cols 0–2 (stop excluded). `A[r][c]` chains rows twice — use the comma. `A[:,2]` is 1D, `A[:,2:3]` is 2D, `A[...,2]` ≡ `A[:,2]`, bare `A[2]` is a ROW.
-15. `X = data[:, :2]`, `y = data[:, 2]` — target never inside X. `df["Salary"]` one column, `df[["Age","Salary"]]` two; `df[Salary]` = NameError.
-16. `pd.read_csv()`. `df.info()` = dtypes + missing; `df.shape` = (rows, cols) — rows FIRST. `.str.upper()` = standardize inconsistent text.
-17. Matplotlib = fundamental; Seaborn = polished with minimal effort. `scatter` = two-variable relationship; heatmap = correlation matrix; no graph + no error = missing `plt.show()`. Label axes with real names and units.
-18. Workflow: Import → Clean → **Split** → Train → Evaluate. Split before Train, Evaluate last. Spam Yes/No = classification.
-19. Ridge = L2, Lasso = L1; regularization penalizes large coefficients. Overfitting = high variance (memorises training data). Accuracy = (TP+TN)/all — and the wrong options will be the recall TP/(TP+FN) and precision TP/(TP+FP) computed on the same matrix, so write the four cells down first.
-20. Lower MSE/RMSE + higher R² wins. Test set = final evaluation ONLY — never feature selection, comparison, or tuning. Age −5 = invalid; $1M salary = outlier; numeric → ranges = binning. In `y = 1000 + 500x`, 1000 = intercept, 500 = change per unit.
+**Pandas & data handling**
+- `pd.read_csv()` loads a CSV; `df.info()` = dtypes + non-null counts; `df.shape` = (rows, cols) — rows FIRST
+- `df.isnull().sum()` counts missing per column; handle with `dropna()` or `fillna(df[col].median())`
+- `df["Salary"]` = one column; `df[["Age","Salary"]]` = two (list inside brackets); `df[Salary]` without quotes = NameError
+- `.str.upper()` / `.str.lower()` = standardize inconsistent text values
+
+**NumPy**
+- `A[rows, cols]` — rows before the comma; start **included**, stop **excluded** (`A[2:5, 0:3]` = rows 2–4 × cols 0–2)
+- `A[r][c]` chains row-slices twice — use the comma instead
+- `A[:,2]` is 1D · `A[:,2:3]` is 2D · `A[...,2]` ≡ `A[:,2]` · bare `A[2]` is a ROW
+- Features/target split: `X` = every column except the target, `y` = the target column — the target is never inside X
+
+**Python**
+- `def f(a, b=2)` — `b` is optional, `a` is required
+- Early `return` needs no `else`; a method without `return` gives `None`; `self.attr` = per-object state
+- `and` binds before `or`: `P and Q or R` = `(P and Q) or R`
+- `continue` skips the rest of ONE iteration — the loop still runs every iteration; check which values the condition *keeps*
+- `finally` always runs, exception or not
+- `"w"` wipes the file, `"a"` appends — vanishing history = a `"w"` bug
+
+**Visualization**
+- `plt.xlabel` / `plt.ylabel` / `plt.title` — everything else is an invented name
+- Boxplot = outliers (fences at Q1 − 1.5×IQR and Q3 + 1.5×IQR) · scatter = two-variable relationship · heatmap = correlation matrix
+- Histogram and boxplot are univariate; scatter and line need two variables
+- No graph + no error = missing `plt.show()`
+- Matplotlib = the fundamental library; Seaborn = polished statistical charts with minimal effort
+- Real axis labels with units beat `"X"` / `"Y"` every time
+
+**Preprocessing**
+- `StandardScaler` → mean 0, std 1 · `MinMaxScaler` → [0, 1] · fit on **train only**, transform both
+- Ordered category → Label Encoding · unordered → One-Hot
+- Hundreds of correlated numeric features → PCA · numeric → ranges = binning
+- A negative age = invalid entry; a value ~100× its neighbours = outlier — investigate before deleting
+- Trees and forests don't need scaling; distance/gradient models (KNN, SVM, K-Means, NN, LR) do
+
+**Splitting & workflow**
+- Import → Clean → **Split** → Train → Evaluate: Split before Train, Evaluate last
+- `train_test_split()`, `test_size=0.2` = 20% test; `random_state` = reproducible split
+- Test set = **final evaluation only** — never feature selection, model comparison, or tuning
+
+**Algorithms**
+- Continuous target → Linear Regression · Yes/No → Logistic Regression · no labels → K-Means
+- Random Forest = many trees + majority vote; `n_estimators` (and K in K-Means) are hyperparameters **you** choose
+- In `y = b₀ + b₁x`: b₀ = intercept (prediction at zero), b₁ = change in y per unit of x
+
+**Training & regularization**
+- Loss function = the error signal training minimises
+- Batch = update after ALL samples · SGD = after every ONE · mini-batch = after SOME (the deep-learning default)
+- Ridge = L2, Lasso = L1 — both penalize large coefficients
+- `fit()` before `joblib.dump()`, or `NotFittedError`; version your model files
+
+**Diagnosis & metrics**
+- Both scores low → **underfitting** (high bias) · big train–test gap → **overfitting** (high variance) → reduce complexity
+- Bull's-eye: position = bias, spread = variance
+- Costly to miss a positive (cancer screening) → **Recall** = TP/(TP+FN)
+- Accuracy = (TP+TN)/all — write the four cells first; wrong options are usually the precision and recall of the same matrix
+- Regression → MSE/RMSE/MAE (lower = better, RMSE in target units) and R² (higher = better, and NOT "% correct")
