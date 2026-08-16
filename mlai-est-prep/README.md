@@ -38,7 +38,7 @@ Tick each one as you can confidently explain *why* the answer is what it is.
 - [ ] **Matplotlib labels** — `plt.xlabel()`, `plt.ylabel()`, `plt.title()`; there is no `plt.xaxis()` / `plt.labelx()`
 - [ ] **Boxplot & IQR** — outliers fall beyond `Q1 − 1.5×IQR` or `Q3 + 1.5×IQR`; boxplot is THE outlier chart
 - [ ] **Univariate distribution** — histogram and boxplot show one numeric variable's distribution; scatter needs two variables
-- [ ] **Outliers in data** — one value wildly far from the rest (1.2, 1.4, 1.3, **50.0**); investigate before deleting
+- [ ] **Outliers in data** — one value wildly far from the rest (22.1, 22.4, 21.9, **480.0**); investigate before deleting
 
 ### Data Cleaning
 - [ ] **Missing data** — `NaN` = missing; `df.isnull()` flags it, `df.isnull().sum()` counts per column
@@ -124,10 +124,10 @@ Matplotlib's labelling functions follow one simple naming pattern — and the wr
 
 **Full mini-example:**
 ```python
-plt.scatter(df["Age"], df["Salary"])
-plt.xlabel("Age")
+plt.scatter(df["Experience"], df["Salary"])
+plt.xlabel("Experience (years)")
 plt.ylabel("Salary")
-plt.title("Salary by Age")
+plt.title("Salary by Experience")
 plt.show()
 ```
 
@@ -427,12 +427,12 @@ The minimum lands exactly on 0, the maximum exactly on 1, everything else propor
 
 ---
 
-###### 9. A dataset has two categorical columns: `Education` (Primary, Secondary, Diploma, Degree) and `Country` (Singapore, Malaysia, Thailand). Which encoding pairing is most appropriate?
+###### 9. A dataset has two categorical columns: `Qualification` (O-Level, Diploma, Degree, Masters) and `Country` (Singapore, Malaysia, Thailand). Which encoding pairing is most appropriate?
 
 - A: Label-encode both
 - B: One-hot encode both
-- C: Label-encode `Education`, one-hot encode `Country`
-- D: One-hot encode `Education`, label-encode `Country`
+- C: Label-encode `Qualification`, one-hot encode `Country`
+- D: One-hot encode `Qualification`, label-encode `Country`
 
 <details><summary><b>Answer</b></summary>
 <p>
@@ -443,13 +443,13 @@ The deciding question is: **does the category have a natural order?**
 
 | Column | Natural order? | Type | Right encoding |
 |--------|----------------|------|----------------|
-| Education | ✅ Primary < Secondary < Diploma < Degree | **Ordinal** | Label Encoding (0, 1, 2, 3) — the numbers *mean* something |
+| Qualification | ✅ O-Level < Diploma < Degree < Masters | **Ordinal** | Label Encoding (0, 1, 2, 3) — the numbers *mean* something |
 | Country | ❌ Singapore is not "more than" Malaysia | **Nominal** | One-Hot Encoding (separate 0/1 column per country) |
 
 **What goes wrong if you swap them:**
 
 - Label-encoding `Country` as Singapore=0, Malaysia=1, Thailand=2 tells the model Thailand = 2 × Malaysia and that Singapore < Malaysia < Thailand. A linear model will happily learn from this **fake order** — a real, silent bug.
-- One-hot encoding `Education` isn't *wrong*, but it **throws away** the genuine order information (and adds columns needlessly).
+- One-hot encoding `Qualification` isn't *wrong*, but it **throws away** the genuine order information (and adds columns needlessly).
 
 **Key Rule:**
 
@@ -1492,7 +1492,7 @@ Trace the lifecycle — the model was **created** and **saved**, but never **tra
 ## Study Guide — Part 2 Concepts
 
 ### Python Fundamentals
-- [ ] **Default parameters** — `def f(a, b=2)`: `b` is optional, `a` is NOT; calling `f()` is a `TypeError`
+- [ ] **Default parameters** — `def f(a, b=10)`: `b` is optional, `a` is NOT; calling `f()` is a `TypeError`
 - [ ] **Early return** — `if cond: return X` then `return Y` needs no `else`; first `return` reached wins
 - [ ] **Classes** — `__init__` runs at creation; `self.attr` is per-object state; a method without `return` gives `None`
 - [ ] **Operator precedence** — `and` binds tighter than `or`: `P and Q or R` = `(P and Q) or R`
@@ -1503,7 +1503,7 @@ Trace the lifecycle — the model was **created** and **saved**, but never **tra
 - [ ] **2D slicing** — `A[2:5, 0:3]` = rows 2–4, cols 0–2 (stop excluded); `A[r][c]` chaining ≠ `A[r, c]`
 - [ ] **1D vs 2D results** — `A[:, 2]` → 1D values; `A[:, 2:3]` → 2D one-column matrix; `A[..., 2]` ≡ `A[:, 2]`
 - [ ] **X/y slicing** — features `X = data[:, :2]`, target `y = data[:, 2]`
-- [ ] **Column selection** — `df["Salary"]` one column; `df[["Age","Salary"]]` (double brackets) several
+- [ ] **Column selection** — `df["Score"]` one column; `df[["Name","Score"]]` (double brackets) several
 - [ ] **Loading & inspecting** — `pd.read_csv()`; `df.info()` = dtypes + non-null counts; `df.shape` = (rows, cols)
 - [ ] **Text standardization** — `df["City"].str.lower()` / `.str.upper()` unifies inconsistent category spellings
 
@@ -2049,16 +2049,16 @@ data = np.array([
 
 ```python
 df = pd.DataFrame({
-    "Age": [25, 30, 35],
-    "Salary": [3000, 4500, 6000],
-    "Purchased": ["Yes", "No", "Yes"]
+    "Name": ["Ana", "Ben", "Cal"],
+    "Score": [70, 85, 92],
+    "Passed": ["Yes", "Yes", "No"]
 })
 ```
 
-- A: `df["Salary"]` selects the Salary column
-- B: `df[["Age", "Salary"]]` returns a DataFrame with both columns
-- C: `df[Salary]` raises a `NameError`
-- D: `df["Age", "Salary"]` also returns the two columns
+- A: `df["Score"]` selects the Score column
+- B: `df[["Name", "Score"]]` returns a DataFrame with both columns
+- C: `df[Score]` raises a `NameError`
+- D: `df["Name", "Score"]` also returns the two columns
 
 <details><summary><b>Answer</b></summary>
 <p>
@@ -2069,17 +2069,17 @@ df = pd.DataFrame({
 
 | Code | What happens |
 |------|--------------|
-| **A** `df["Salary"]` | ✅ One string key → the Salary column (a Series) |
-| **B** `df[["Age", "Salary"]]` | ✅ A **list** of column names → a DataFrame with those columns. Outer brackets = indexing, inner brackets = the list — hence "double brackets" |
-| **C** `df[Salary]` | ✅ the statement is correct — without quotes, `Salary` is treated as a Python **variable**, which doesn't exist → `NameError: name 'Salary' is not defined` |
-| **D** `df["Age", "Salary"]` | ❌ Two strings without list brackets form a **tuple** key `("Age", "Salary")` — pandas looks for a single column with that weird name → `KeyError` |
+| **A** `df["Score"]` | ✅ One string key → the Score column (a Series) |
+| **B** `df[["Name", "Score"]]` | ✅ A **list** of column names → a DataFrame with those columns. Outer brackets = indexing, inner brackets = the list — hence "double brackets" |
+| **C** `df[Score]` | ✅ the statement is correct — without quotes, `Score` is treated as a Python **variable**, which doesn't exist → `NameError: name 'Score' is not defined` |
+| **D** `df["Name", "Score"]` | ❌ Two strings without list brackets form a **tuple** key `("Name", "Score")` — pandas looks for a single column with that weird name → `KeyError` |
 
 **The selection cheat sheet:**
 
 | Want | Code |
 |------|------|
-| One column | `df["Salary"]` |
-| Several columns | `df[["Age", "Salary"]]` — double brackets |
+| One column | `df["Score"]` |
+| Several columns | `df[["Name", "Score"]]` — double brackets |
 | One column by position | `df.iloc[:, 1]` |
 | Rows by condition | `df[df["Age"] > 28]` |
 
@@ -2159,13 +2159,13 @@ df = pd.DataFrame({
 | Command | Tells you |
 |---------|-----------|
 | `df.info()` | dtypes + non-null counts + memory — the structure overview |
-| `df.shape` | `(rows, columns)` tuple — **`(900, 8)` means 900 rows and 8 columns**, in that order — worth stating from memory |
+| `df.shape` | `(rows, columns)` tuple — **`(450, 6)` means 450 rows and 6 columns**, in that order — worth stating from memory |
 | `df.head()` | First 5 rows — eyeball the actual values |
 | `df.describe()` | Count/mean/std/min/quartiles/max for numeric columns |
 
 **Key Rule:**
 
-> `shape` = how big, `info` = what types and what's missing, `head` = what it looks like, `describe` = how it's distributed. Rows always come first in `shape` — `(900, 8)` is 900 rows, never 900 columns.
+> `shape` = how big, `info` = what types and what's missing, `head` = what it looks like, `describe` = how it's distributed. Rows always come first in `shape` — `(450, 6)` is 450 rows, never 450 columns.
 
 </p>
 </details>
@@ -2667,7 +2667,7 @@ KNN classifies a point by looking at its **nearest neighbours** — and "nearest
 
 ###### 52. Which regularization method is commonly known as **Ridge Regression** — and what does regularization generally do?
 
-- A: L2; it penalizes large model coefficients
+- A: L2; it adds a penalty that discourages large coefficients
 - B: L1; it creates new features
 - C: Elastic Net; it increases dataset size
 - D: SGD; it scales the data
@@ -2693,7 +2693,7 @@ KNN classifies a point by looking at its **nearest neighbours** — and "nearest
 new loss = prediction error + α × (size of coefficients)
 ```
 
-Now the optimizer must balance fitting the data against keeping coefficients small. Huge coefficients — the signature of a model contorting itself around training noise — become expensive. Smaller coefficients = smoother, simpler model = **less overfitting**. That's why the general-purpose answer is "**penalizing large model coefficients**" — not creating features, not more data, not scaling (all real techniques, none of them regularization).
+Now the optimizer must balance fitting the data against keeping coefficients small. Huge coefficients — the signature of a model contorting itself around training noise — become expensive. Smaller coefficients = smoother, simpler model = **less overfitting**. That's why the general-purpose description of regularization is **a penalty that discourages large coefficients** — not creating features, not more data, not scaling (all real techniques, none of them regularization).
 
 **Memory hook:** **L1 = Lasso** (both start with L... and Lasso *lassoes* coefficients to zero). Ridge gets the other one: **L2**.
 
@@ -2716,7 +2716,7 @@ with `alpha` controlling penalty strength — "too small may not control overfit
 
 ---
 
-###### 53. A model **memorizes the training data but performs poorly on unseen data**. Separately: a bull's-eye chart shows predictions tightly clustered around the centre target. What do these two indicate?
+###### 53. A model **fits its training set almost perfectly yet scores far worse on data it has never seen**. Separately: a bull's-eye chart shows predictions tightly clustered around the centre target. What do these two indicate?
 
 - A: High Variance (overfitting); Low Bias + Low Variance
 - B: High Bias (underfitting); High Bias + High Variance
@@ -2728,7 +2728,7 @@ with `alpha` controlling penalty strength — "too small may not control overfit
 
 #### Answer: A
 
-**Scenario 1 — "memorizes training, fails unseen":** that is the *definition* of **overfitting**, and its statistical name is **high variance**. Watch for the twist: an option list can offer "High Variance" but NOT "Overfitting" — you must know they're the same diagnosis, or you'll wrongly grab "Underfitting" as the nearest familiar word.
+**Scenario 1 — near-perfect on training, far worse on unseen data:** that is the *definition* of **overfitting** ("memorising" the training set), and its statistical name is **high variance**. Watch for the twist: an option list can offer "High Variance" but NOT "Overfitting" — you must know they're the same diagnosis, or you'll wrongly grab "Underfitting" as the nearest familiar word.
 
 | Everyday name | Statistical name | Signature |
 |---------------|------------------|-----------|
@@ -3051,7 +3051,7 @@ Night-before revision — one fact per line, grouped by topic.
 **Pandas & data handling**
 - `pd.read_csv()` loads a CSV; `df.info()` = dtypes + non-null counts; `df.shape` = (rows, cols) — rows FIRST
 - `df.isnull().sum()` counts missing per column; handle with `dropna()` or `fillna(df[col].median())`
-- `df["Salary"]` = one column; `df[["Age","Salary"]]` = two (list inside brackets); `df[Salary]` without quotes = NameError
+- `df["Score"]` = one column; `df[["Name","Score"]]` = two (list inside brackets); `df[Score]` without quotes = NameError
 - `.str.upper()` / `.str.lower()` = standardize inconsistent text values
 
 **NumPy**
@@ -3061,7 +3061,7 @@ Night-before revision — one fact per line, grouped by topic.
 - Features/target split: `X` = every column except the target, `y` = the target column — the target is never inside X
 
 **Python**
-- `def f(a, b=2)` — `b` is optional, `a` is required
+- `def f(a, b=10)` — `b` is optional, `a` is required
 - Early `return` needs no `else`; a method without `return` gives `None`; `self.attr` = per-object state
 - `and` binds before `or`: `P and Q or R` = `(P and Q) or R`
 - `continue` skips the rest of ONE iteration — the loop still runs every iteration; check which values the condition *keeps*
