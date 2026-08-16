@@ -30,3 +30,6 @@ ENV/
 # OS / misc
 Thumbs.db
 desktop.ini
+
+# Lecturer-only audit notes — never distribute
+mlai-est-prep/AUDIT.md
